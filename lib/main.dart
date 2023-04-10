@@ -46,6 +46,9 @@ class _MyAppState extends State<MyApp> {
             // use for app bar
              theme: iconBool ? darkTheme:lightTheme,
            // use for switch
+          // theme: ThemeData.light(),
+          // darkTheme: ThemeData.dark(),
+          // themeMode: isDarkMode ? ThemeMode.dark : ThemeMode.light,
             // with radio button
             // theme: ThemeData(
             //   brightness: Brightness.light,
