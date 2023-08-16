@@ -3,21 +3,20 @@ import 'package:news_app/provider/theme_change_provider.dart';
 import 'package:news_app/view/home_page.dart';
 import 'package:provider/provider.dart';
 
+import 'asif_news/view/splash_screen.dart';
+
 void main() {
   runApp( MyApp());
 }
-
 class MyApp extends StatefulWidget {
    MyApp({super.key});
-
   @override
   State<MyApp> createState() => _MyAppState();
 }
-
 class _MyAppState extends State<MyApp> {
   // This widget is the root of your application.
   ThemeData lightTheme = ThemeData(
-    primarySwatch: Colors.amber,
+    primarySwatch: Colors.grey,
     brightness: Brightness.light,
   );
 
@@ -69,7 +68,7 @@ class _MyAppState extends State<MyApp> {
                     icon: Icon(iconBool ?iconDark : iconLight ),),
                 ],
               ),
-              body: HomePage(),
+              body: SplashScreen(),
             ),
 
             debugShowCheckedModeBanner: false,

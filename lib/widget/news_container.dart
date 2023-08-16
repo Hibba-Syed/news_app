@@ -1,77 +1,100 @@
 import 'package:flutter/material.dart';
-class NewsContainer extends StatefulWidget {
+import 'package:url_launcher/url_launcher.dart';
+
+import '../view/detail_view.dart';
+
+class NewsContainer extends StatelessWidget {
   String imgUrl;
   String newsHead;
   String newsDes;
   String newsUrl;
-  void Function(bool?)? onChanged;
+  String newsCnt;
   NewsContainer({super.key,
-     required this.imgUrl,
-     required this.newsDes,
-     required this.newsHead,
-     required this.newsUrl,
-    this.onChanged,
-   });
-
-  @override
-  State<NewsContainer> createState() => _NewsContainerState();
-}
-
-class _NewsContainerState extends State<NewsContainer> {
-  bool _isDarkMode = false;
+        required this.imgUrl,
+        required this.newsDes,
+        required this.newsCnt,
+        required this.newsHead,
+        required this.newsUrl
+      });
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      height: MediaQuery.of(context).size.height,
-      width: MediaQuery.of(context).size.height,
+    return SingleChildScrollView(
       child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Image.network(
-              widget.imgUrl,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+        FadeInImage.assetNetwork(
             height: 400,
-          width: MediaQuery.of(context).size.width,
+            width: MediaQuery.of(context).size.width,
             fit: BoxFit.cover,
-          ),
-           Container(
-             padding: const EdgeInsets.symmetric(horizontal: 20),
-             child: Column(
-               crossAxisAlignment: CrossAxisAlignment.start,
-               children: [
-                 const SizedBox(height: 20,),
-                 Text(widget.newsHead,style: const TextStyle(
-                     fontSize: 18,
-                     fontWeight:FontWeight.bold ),),
-                 const SizedBox(height: 10,),
-                 Text(widget.newsDes,style: const TextStyle(
-                   fontSize: 15,
-                 ),),
-               ],
-             ),
-           ),
-         const SizedBox(height: 20,),
-         // const Spacer(),
-         //  Switch(
-         //      value: _isDarkMode,
-         //      onChanged: widget.onChanged,
-         //  ),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.end,
-            children: [
-              Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 20),
-                child: ElevatedButton(
-                    onPressed: (){},
-                    child: const Text("Read More")
-                ),
+            placeholder: "assets/image/placeholder.jfif",
+            image: imgUrl
+        ),
+        Container(
+          padding: const EdgeInsets.symmetric(horizontal: 20),
+          child:
+          Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
+            const SizedBox(height: 30,),
+            Text(
+              newsHead.length > 90
+                  ? "${newsHead.substring(0, 90)}..."
+                  : newsHead,
+              style: const TextStyle(
+                  fontSize: 23,
+                  fontWeight: FontWeight.bold
               ),
-            ],
-          ),
-          const SizedBox(height: 20,),
-
-        ],
-      ),
+            ),
+            const SizedBox(height: 30,),
+            Text(
+              newsDes,
+              style: const TextStyle(
+                  fontSize: 12,
+                  color: Colors.black45
+              ),
+            ),
+            const SizedBox(height: 30,),
+            Text(
+              newsCnt != "--"
+                  ? newsCnt.length > 250
+                  ? newsCnt.substring(0, 250)
+                  : "${newsCnt.toString().substring(0, newsCnt.length - 15)}..."
+                  : newsCnt,
+              style: const TextStyle(fontSize: 16),
+            ),
+          ]),
+        ),
+       // const Spacer(),
+        Row(
+          mainAxisAlignment: MainAxisAlignment.end,
+          children: [
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 20),
+              child: ElevatedButton(
+                  onPressed: () {
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) =>
+                                DetailView(newsUrl: newsUrl)));
+                  },
+                  child: const Text("Read More")),
+            ),
+          ],
+        ),
+        Center(
+            child: TextButton(
+                onPressed: () async {
+                 await launchUrl(Uri.parse("https://newsapi.org/"));
+                },
+                child: const Text(
+                  "News Provided By NewsAPI.org",
+                  style: TextStyle(fontSize: 12),
+                  textAlign: TextAlign.center,
+                ))),
+        const SizedBox(
+          height: 20,
+        ),
+      ]),
     );
   }
 }
